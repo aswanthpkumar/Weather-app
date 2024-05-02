@@ -15,6 +15,13 @@ class MyApp extends StatelessWidget {
       title: 'Weather App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+        iconTheme: const IconThemeData(
+          color: Colors.white
+        ),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
