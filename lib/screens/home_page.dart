@@ -2,6 +2,7 @@ import 'package:apiweatherapp/assets.dart';
 import 'package:apiweatherapp/services/location_provider.dart';
 import 'package:apiweatherapp/utils/apptext.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,21 +13,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-
   @override
   void initState() {
-    Provider.of<LocationProvider>(context,listen: false).determinePosition();
+    Provider.of<LocationProvider>(context, listen: false).determinePosition();
     super.initState();
-
   }
-
-
 
   bool _clicked = false;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final locationProvider = Provider.of<LocationProvider>(context);
     return Scaffold(
       backgroundColor: Colors.black,
       extendBodyBehindAppBar: true,
@@ -64,48 +61,58 @@ class _HomePageState extends State<HomePage> {
                     ),
                   )
                 : SizedBox.shrink(),
-            SizedBox(
+            Container(
               height: 50,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: Row(
-                      children: [
-                        const Icon(Icons.location_pin, color: Colors.red),
-                        const SizedBox(width: 10),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AppText(
-                                data: 'Dubai',
-                                color: Colors.white,
-                                fw: FontWeight.w700,
-                                size: 18),
-                            const SizedBox(width: 5),
-                            AppText(
-                                data: 'Good Morning',
-                                color: Colors.white,
-                                fw: FontWeight.w400),
-                          ],
-                        ),
-                      ],
+              child: Consumer<LocationProvider>(
+                  builder: (context, locationProvider, child) {
+                    var locationCity;
+                    if(locationProvider.currentLocationName != null){
+                      locationCity = locationProvider.currentLocationName!.locality;
+                    }else{
+                      locationCity = 'Unkonwn Location';
+                    }
+                // final locationCity=locationProvider.currentLocationName?.locality;
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      child: Row(
+                        children: [
+                          const Icon(Icons.location_pin, color: Colors.red),
+                          const SizedBox(width: 10),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppText(
+                                  data: locationCity,
+                                  color: Colors.white,
+                                  fw: FontWeight.w700,
+                                  size: 18),
+                              const SizedBox(width: 5),
+                              AppText(
+                                  data: 'Good Morning',
+                                  color: Colors.white,
+                                  fw: FontWeight.w400),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _clicked = !_clicked;
-                      });
-                    },
-                    icon: const Icon(
-                      Icons.search,
-                      size: 35,
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _clicked = !_clicked;
+                        });
+                      },
+                      icon: const Icon(
+                        Icons.search,
+                        size: 35,
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                );
+              }),
             ),
             Align(
               alignment: Alignment(0, -0.7),
@@ -118,21 +125,28 @@ class _HomePageState extends State<HomePage> {
             Align(
               alignment: Alignment(0, 0),
               child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.black.withOpacity(0.4)),
                 height: 130,
+                width: 130,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     AppText(
                         data: '21 °C',
-                        color: Colors.black,
+                        color: Colors.white60,
                         fw: FontWeight.bold,
                         size: 32),
                     AppText(
                         data: 'Snow',
-                        color: Colors.black,
+                        color: Colors.white60,
                         fw: FontWeight.w600,
                         size: 26),
-                    AppText(data: DateTime.now().toString()),
+                    AppText(
+                      data: DateFormat.Hm().format(DateTime.now()),
+                      color: Colors.white,
+                    ),
                   ],
                 ),
               ),
