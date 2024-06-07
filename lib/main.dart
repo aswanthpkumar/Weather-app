@@ -1,5 +1,6 @@
 import 'package:apiweatherapp/screens/home_page.dart';
 import 'package:apiweatherapp/services/location_provider.dart';
+import 'package:apiweatherapp/services/weather_service_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context)=>LocationProvider()),
-        
+        ChangeNotifierProvider(create: (context)=>WeatherServiceProvider())
       ],
       child: MaterialApp(
         title: 'Weather App',

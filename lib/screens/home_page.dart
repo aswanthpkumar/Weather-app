@@ -1,5 +1,6 @@
 import 'package:apiweatherapp/assets.dart';
 import 'package:apiweatherapp/services/location_provider.dart';
+import 'package:apiweatherapp/services/weather_service_provider.dart';
 import 'package:apiweatherapp/utils/apptext.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -15,7 +16,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    Provider.of<LocationProvider>(context, listen: false).determinePosition();
+    
+     Provider.of<LocationProvider>(context, listen: false).determinePosition();
+     Provider.of<WeatherServiceProvider>(context,listen: false).fetchWeatherDataByCity("Dubai");
+    
     super.initState();
   }
 
