@@ -16,9 +16,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    
-     Provider.of<LocationProvider>(context, listen: false).determinePosition();
-     Provider.of<WeatherServiceProvider>(context,listen: false).fetchWeatherDataByCity("Dubai");
+    final locationProvider=Provider.of<LocationProvider>(context,listen: false);
+    locationProvider.determinePosition().then((_){
+      if(locationProvider.currentLocationName!=null){
+        var city= locationProvider.currentLocationName!.locality;
+        if(city!=null){
+          Provider.of<WeatherServiceProvider>(context,listen: false).fetchWeatherDataByCity(city);
+        }
+      }
+    });
+    //  Provider.of<LocationProvider>(context, listen: false).determinePosition();
+    //  Provider.of<WeatherServiceProvider>(context,listen: false).fetchWeatherDataByCity("Dubai");
     
     super.initState();
   }
